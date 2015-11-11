@@ -20,12 +20,14 @@ main (int argc, char *argv[])
   Time::SetResolution (Time::US);
 
   // Parámetros de la simulación
-  Time     trtx             = Time("50ms");
+  Time     trtx             = Time("10ms");
   uint32_t tamPaquete       = 994;
-  Time     rprop            = Time("2ms");
+  Time     rprop            = Time("4ms");
   DataRate vtx              = DataRate("1000kbps");
-  uint8_t  tamVentana       = 2;
-  double probabilidad_error = 0.5;
+  uint8_t  tamVentana       = 3;
+  double probabilidad_error = 0.0000002;
+
+  //Ventana ventana (tamVentana,256);
 
   // Configuramos el escenario:
   PointToPointHelper escenario;
@@ -34,14 +36,12 @@ main (int argc, char *argv[])
   escenario.SetQueue ("ns3::DropTailQueue");
 
 
-  //Ptr<ErrorModel> error_model;
-  //escenario.SetReceiveErrorModel(error_model);
-
   Ptr<RateErrorModel> error_model = CreateObject<RateErrorModel>();
   Ptr<UniformRandomVariable> distribucion_del_error = CreateObject<UniformRandomVariable>();
 
   error_model->SetRandomVariable(distribucion_del_error);
   error_model->SetRate(probabilidad_error);
+  error_model->SetUnit(RateErrorModel::ERROR_UNIT_BIT);
 
   // Creamos los nodos
   NodeContainer      nodos;
@@ -70,10 +70,10 @@ main (int argc, char *argv[])
 
   // Activamos el transmisor
   transmisor.SetStartTime (Seconds (1.0));
-  transmisor.SetStopTime (Seconds (1.15)); //cambiado 9.95 por 1.95 para pruebas
+  transmisor.SetStopTime (Seconds (9.95)); //cambiado 9.95 por 1.95 para pruebas
 
   receptor.SetStartTime(Seconds (1.0));
-  receptor.SetStopTime(Seconds (1.15));
+  receptor.SetStopTime(Seconds (9.95));
   
   Simulator::Run ();
   Simulator::Destroy ();
@@ -84,6 +84,7 @@ main (int argc, char *argv[])
   NS_LOG_DEBUG ("RTT: " << vtx.CalculateTxTime (tamPaquete + 6) + 2 * rprop);
   NS_LOG_DEBUG ("Temporizador: " << trtx);
   NS_LOG_INFO  ("Total paquetes: " << observador.TotalPaquetes ());
+  NS_LOG_INFO ("Paquetes erróneos: " << observador.TotalPaquetesRechazados());
   
   return 0;
 }

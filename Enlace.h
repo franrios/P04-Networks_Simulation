@@ -5,6 +5,7 @@ using namespace ns3;
 #include "ns3/node.h"
 #include "ns3/net-device.h"
 #include "ns3/application.h"
+#include "Ventana.h"
 
 class Enlace : public Application
 {
@@ -61,14 +62,23 @@ private:
   // Método que se llama en el instante de comienzo de la aplicación.
   void StartApplication()
   {
+        //NS_LOG_COMPONENT_DEFINE ("Enlaceh");
+       //Ventana ventana (m_tamTx,rango);
+        //Ventana m_ventana (m_tamTx, rango); Ventana m_ventana (m_tamTx, rango);
+
     // Formamos el primer paquete
     //m_paquete = Create<Packet> (&m_tx, m_tamPqt + 1);
     // Y lo enviamos
    // NS_LOG_INFO("Valor de vent ini " << (unsigned int) m_vent_ini);
-    for (m_tx = 0, m_vent_ini=0; m_tx < m_vent_ini + m_tamTx; m_tx++)
-    {
-      EnviaPaquete();
-    }
+      //  NS_LOG_INFO ("Resultado de ventana pendiente: " << (unsigned int) m_tx);
+    //for (m_tx = 0, m_vent_ini=0; ventana.EnVentana(m_tx)==true && ventana.Credito(); m_tx=ventana.Pendiente())
+
+    //Mientras queden huecos libres en la ventana, seguimos transmitiendo
+    //    while(m_ventana.Credito()>0)
+      //  {
+          EnviaPaquete();
+        //  m_tx=m_ventana.Pendiente();
+       // }
   }
 
   // Método que se llama en el instante de final de la aplicación.
@@ -105,8 +115,13 @@ private:
   //V(R) en el estándar (número secuencial de la siguiente trama que debe recibirse)
   uint8_t        m_rx;
 
+  uint32_t       rango;
+
 //Contabilizar paquetes asentidos
   int m_totalPqtACK;
+
+ // Ventana m_ventana;
+  Ventana m_ventana;
 };
 
 

@@ -11,6 +11,7 @@ Observador::Observador ()
   NS_LOG_FUNCTION_NOARGS ();
 
   m_paquetes = 0;
+  m_paquete_rechazado = 0;
 }
 
 
@@ -25,7 +26,7 @@ void
 Observador::PaqueteRechazado (Ptr<const Packet> paquete_rechazado)
 {
 	NS_LOG_FUNCTION(paquete_rechazado);
-	m_paquete_rechazado++;
+	m_paquete_rechazado++; 
 }
 
 
@@ -35,4 +36,12 @@ Observador::TotalPaquetes ()
   NS_LOG_FUNCTION_NOARGS ();
 
   return m_paquetes;
+}
+
+uint32_t
+Observador::TotalPaquetesRechazados ()
+{
+	NS_LOG_FUNCTION_NOARGS();
+
+	return m_paquete_rechazado;
 }
