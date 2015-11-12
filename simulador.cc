@@ -19,13 +19,20 @@ main (int argc, char *argv[])
 {
   Time::SetResolution (Time::US);
 
+
+  /*tamaño de la ventana de transmisión, window (6)
+retardo de propagación del enlace, delay (0,2 ms)
+capacidad de transmisión en el canal, rate (1Mbit/s)
+tamaño de la SDU del nivel de enlace, pktSize (121 octetos)
+tiempo de espera para la retransmisión, wait (6 ms)*/
+
   // Parámetros de la simulación
-  Time     trtx             = Time("10ms");
-  uint32_t tamPaquete       = 994;
-  Time     rprop            = Time("4ms");
-  DataRate vtx              = DataRate("1000kbps");
-  uint8_t  tamVentana       = 3;
-  double probabilidad_error = 0.0000002;
+  Time     trtx             = Time("6ms");
+  uint32_t tamPaquete       = 121;
+  Time     rprop            = Time("0.2ms");
+  DataRate vtx              = DataRate("1Mbps");
+  uint8_t  tamVentana       = 6;
+  double probabilidad_error = 0.00002;
 
   //Ventana ventana (tamVentana,256);
 
@@ -70,10 +77,10 @@ main (int argc, char *argv[])
 
   // Activamos el transmisor
   transmisor.SetStartTime (Seconds (1.0));
-  transmisor.SetStopTime (Seconds (9.95)); //cambiado 9.95 por 1.95 para pruebas
+  transmisor.SetStopTime (Seconds (1.05)); //cambiado 9.95 por 1.95 para pruebas
 
   receptor.SetStartTime(Seconds (1.0));
-  receptor.SetStopTime(Seconds (9.95));
+  receptor.SetStopTime(Seconds (1.05));
   
   Simulator::Run ();
   Simulator::Destroy ();

@@ -29,18 +29,12 @@ Enlace::Enlace(Ptr<NetDevice> disp,
   m_rx        = 0;
   m_totalPqt  = 0;
   m_tamTx=tamTx;  //Valor de la ventana de tx
-  m_vent_ini=0;
+  //m_vent_ini=0;
   m_totalPqtACK=0;
   rango=256;
-  //Ventana m_ventana;
-//  Ventana m_ventana (m_tamTx, rango);
- // m_ventana = Create<Ventana>(tamTx, rango);
 
 
-  //Ventana ventana (m_tamTx,rango);
-
-
-  NS_LOG_INFO("Parámetros del inicio: ventana " << (unsigned int) m_tamTx << "evaluado " << m_vent_ini + m_tamTx - 1);
+  //NS_LOG_INFO("Parámetros del inicio: ventana " << (unsigned int) m_tamTx << "evaluado " << m_vent_ini + m_tamTx - 1);
 }
 
 
@@ -52,34 +46,22 @@ Enlace::ACKRecibido(uint8_t numSecuencia)
  
   // Comprobamos si el número de secuencia del ACK se corresponde con
   // el de secuencia del siguiente paquete a transmitir
-  // .....................................................................
-  NS_LOG_INFO("ACK ha sido recibido ---------------------...--------------...---------------...------------");
+  //NS_LOG_INFO("ACK ha sido recibido ---------------------...--------------...---------------...------------");
   if(m_ventana.EnVentana(numSecuencia))
     {
-      NS_LOG_INFO("He recibido un ACK que se corresponde con el que esperaba--------------------------");
+     // NS_LOG_INFO("He recibido un ACK que se corresponde con el que esperaba--------------------------");
       // Si es correcto desactivo el temporizador
-      // ....................
       Simulator::Cancel(m_temporizador);
       // aumentamos el número de secuencia
-      // ...................................................................
       m_ventana.Asentida(numSecuencia);
       // Incrementamos el total de paquetes
-      // ...................................................................
       m_totalPqt++;
-      // Se transmite un nuevo paquete
-    //  if(m_tx >= m_vent_ini && m_vent_ini <= m_vent_ini + m_tamTx - 1)
-    //  {
-        //Si el número de secuencia del próximo paquete a tx (V(S)) se encuentra en el rango que abarca la ventana de tx, se envía
-        //m_paquete = Create<Packet> (&m_tx, m_tamPqt + 1);
-        EnviaPaquete();
-      //  m_tx ++;
 
-     // }
-
+      EnviaPaquete();
     }
     else
     {
-      NS_LOG_INFO("El ACK que se esperaba corresponde con: " << (unsigned int) m_vent_ini+1 << " y se ha recibido " << (unsigned int) numSecuencia);
+ //     NS_LOG_INFO("El ACK que se esperaba corresponde con: " << (unsigned int) m_vent_ini+1 << " y se ha recibido " << (unsigned int) numSecuencia);
       Simulator::Cancel(m_temporizador);
       VenceTemporizador();
     }
@@ -90,18 +72,13 @@ void
 Enlace::VenceTemporizador()
 {
   NS_LOG_FUNCTION_NOARGS ();
-  // Reenviamos el último paquete transmitido
-  // ...........................................
-     // m_paquete = Create<Packet> (&m_tx, m_tamPqt + 1);
-    //  EnviaPaquete();
-  NS_LOG_ERROR ("Se ha producido una retransmisión.");
+  NS_LOG_DEBUG("NODO " << m_node->GetId() << ": VENCE TEMPORIZADOR");
+
+  //Vaciamos la ventana
   m_ventana.Vacia();
- // while(m_ventana.Credito()>0)
- // {
-    // Se reenvia un paquete
-    EnviaPaquete();
- //   m_tx=m_ventana.Pendiente();
- // }
+  //Enviamos los últimos k paquetes (siendo k el tamaño de la ventana)
+  EnviaPaquete();
+
 }
 
 
@@ -137,6 +114,8 @@ Enlace::EnviaPaquete()
   if (m_esperaACK != 0 && m_temporizador.IsRunning()== false)
     m_temporizador=Simulator::Schedule(m_esperaACK, &Enlace::VenceTemporizador,this);
   }
+  if(m_ventana.Credito()==0)    
+    NS_LOG_DEBUG("NODO " << m_node->GetId() << ": LLENA LA VENTANA");
 }
 
 void
@@ -158,7 +137,7 @@ Enlace::PaqueteRecibido(Ptr<NetDevice>        receptor,
 
   uint8_t tipo = header.GetTipo(); //Obtenemos el tipo del paquete recibido
   uint8_t numSecuencia = header.GetSecuencia();
-NS_LOG_INFO("..............................................................................");
+//NS_LOG_INFO("..............................................................................");
 
   if(tipo == 0)
     DatoRecibido(numSecuencia);
@@ -178,7 +157,7 @@ Enlace::DatoRecibido(uint8_t numSecuencia)
       if(m_rx==numSecuencia) 
       {
         // Si es correcto, aumento el número de secuencia
-  NS_LOG_INFO("Recibido paquete de DATOS con numSec: " << (unsigned int) numSecuencia << ", y  V(R): " << (unsigned int) m_rx << "--------------------");
+//  NS_LOG_INFO("Recibido paquete de DATOS con numSec: " << (unsigned int) numSecuencia << ", y  V(R): " << (unsigned int) m_rx << "--------------------");
 
         m_rx++;
       }

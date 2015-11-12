@@ -97,7 +97,7 @@ private:
   uint8_t        m_tx;
 
   //num secuencia inicial de la ventana V(A)
-  uint8_t        m_vent_ini;
+ // uint8_t        m_vent_ini;
   
   //tam ventana tx (k)
   uint8_t        m_tamTx;
