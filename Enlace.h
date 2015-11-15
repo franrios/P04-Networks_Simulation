@@ -7,6 +7,8 @@ using namespace ns3;
 #include "ns3/application.h"
 #include "Ventana.h"
 
+#define RANGO 256
+
 class Enlace : public Application
 {
 public:
@@ -14,7 +16,7 @@ public:
   // Constructor de la clase. Necesita como parámetros el puntero al dispositivo de red
   // con el que debe comunicarse, el temporizador de retransmisiones y el tamaño de
   // paquete. Inicializa las variables privadas.
-  Enlace(Ptr<NetDevice>, Time, uint32_t tamPqt, uint32_t tamTx);
+  Enlace(Ptr<NetDevice>, Time, uint32_t tamPqt, uint8_t tamTx);
 
 
 
@@ -25,7 +27,7 @@ public:
   // Función para el procesamiento de asentimientos recibidos.
   // Comprueba si el ACK es el adecuado. Si lo es, desactiva el temporizador de
   // retransmisiones, actualiza el valor de la ventana y envía un nuevo paquete.
-  void ACKRecibido(uint32_t numSecuencia);
+  void ACKRecibido(uint8_t numSecuencia);
   void DatoRecibido(uint32_t numSecuencia);
 
   // Función para el procesamiento de paquetes recibidos
@@ -62,10 +64,10 @@ private:
   // Método que se llama en el instante de comienzo de la aplicación.
   void StartApplication()
   {
-
-    m_ventana.Vacia();
-    EnviaPaquete();
-
+          m_ventana.Vacia();
+          EnviaPaquete();
+        //  m_tx=m_ventana.Pendiente();
+       // }
   }
 
   // Método que se llama en el instante de final de la aplicación.
@@ -81,13 +83,13 @@ private:
   // Tamaño del paquete
   uint32_t       m_tamPqt;
   // Número de secuencia de los paquetes a transmitir 
-  uint32_t        m_tx;
+  uint8_t        m_tx;
 
   //num secuencia inicial de la ventana V(A)
  // uint8_t        m_vent_ini;
   
   //tam ventana tx (k)
-  uint32_t        m_tamTx;
+  uint8_t        m_tamTx;
 
   // Evento de retransmision
   EventId        m_temporizador;
@@ -100,7 +102,7 @@ private:
   // Número de secuencia de los paquetes a recibir
 
   //V(R) en el estándar (número secuencial de la siguiente trama que debe recibirse)
-  uint32_t        m_rx;
+  uint8_t        m_rx;
 
   uint32_t       rango;
 
@@ -110,7 +112,3 @@ private:
  // Ventana m_ventana;
   Ventana m_ventana;
 };
-
-
-
-
