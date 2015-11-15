@@ -41,7 +41,7 @@ simulacion(Time espera_rtx, uint32_t pktSize, Time retardo_prop, DataRate v_tran
 
   error_model->SetRandomVariable(distribucion_del_error);
   error_model->SetRate(probabilidad_error);
-  error_model->SetUnit(RateErrorModel::ERROR_UNIT_BIT);
+  error_model->SetUnit(RateErrorModel::ERROR_UNIT_PACKET);
 
 
   // Creamos los nodos
