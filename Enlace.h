@@ -14,7 +14,7 @@ public:
   // Constructor de la clase. Necesita como parámetros el puntero al dispositivo de red
   // con el que debe comunicarse, el temporizador de retransmisiones y el tamaño de
   // paquete. Inicializa las variables privadas.
-  Enlace(Ptr<NetDevice>, Time, uint32_t tamPqt, uint8_t tamTx);
+  Enlace(Ptr<NetDevice>, Time, uint32_t tamPqt, uint32_t tamTx);
 
 
 
@@ -100,7 +100,7 @@ private:
  // uint8_t        m_vent_ini;
   
   //tam ventana tx (k)
-  uint8_t        m_tamTx;
+  uint32_t        m_tamTx;
 
   // Evento de retransmision
   EventId        m_temporizador;

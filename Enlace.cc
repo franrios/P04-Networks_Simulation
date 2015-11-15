@@ -16,7 +16,7 @@ NS_LOG_COMPONENT_DEFINE ("Enlace");
 Enlace::Enlace(Ptr<NetDevice> disp,
                                  Time           espera,
                                  uint32_t       tamPqt,
-                                 uint8_t        tamTx):m_ventana(tamTx, rango)
+                                 uint32_t        tamTx):m_ventana(tamTx, rango)
                                 // Ventana ventana)
 {
   NS_LOG_FUNCTION (disp << espera << tamPqt);

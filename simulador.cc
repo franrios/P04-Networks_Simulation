@@ -17,14 +17,14 @@ using namespace ns3;
 NS_LOG_COMPONENT_DEFINE ("Practica04");
 
 double
-simulacion(Time espera_rtx, uint32_t pktSize, Time retardo_prop, DataRate v_trans, uint8_t tamanio_Ventana, double p_error)
+simulacion(Time espera_rtx, uint32_t pktSize, Time retardo_prop, DataRate v_trans, uint32_t tamanio_Ventana, double p_error)
 {
     // Parámetros de la simulación
   Time     trtx             = espera_rtx;
   uint32_t tamPaquete       = pktSize;
   Time     rprop            = retardo_prop;
   DataRate vtx              = v_trans;
-  uint8_t  tamVentana       = tamanio_Ventana;
+  uint32_t  tamVentana       = tamanio_Ventana;
   double probabilidad_error = p_error;
   double cadenciaEficaz=0.0;
   double rendimiento=0.0;
@@ -64,7 +64,7 @@ simulacion(Time espera_rtx, uint32_t pktSize, Time retardo_prop, DataRate v_tran
   Observador observador;
 
   // Suscribimos la traza de paquetes correctamente asentidos.
-  dispositivos.Get (0)->TraceConnectWithoutContext ("MacRx", MakeCallback(&Observador::PaqueteAsentido, &observador));
+  dispositivos.Get (1)->TraceConnectWithoutContext ("MacRx", MakeCallback(&Observador::PaqueteAsentido, &observador));
   //Suscribimos la traza de paquetes rechazados.
   dispositivos.Get (1)->GetObject<PointToPointNetDevice>()->TraceConnectWithoutContext ("PhyRxDrop", MakeCallback(&Observador::PaqueteRechazado, &observador));
 
@@ -122,7 +122,7 @@ tiempo de espera para la retransmisión, wait (6 ms)*/
   uint32_t tamPaquete       = 121;
   Time     rprop            = Time("0.2ms");
   DataRate vtx              = DataRate("1Mbps");
-  uint8_t  tamVentana       = 6;
+  uint32_t  tamVentana       = 6;
   double probabilidad_error = 0.0;
   double pruebas=0;
 
