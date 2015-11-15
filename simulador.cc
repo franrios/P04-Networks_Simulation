@@ -26,6 +26,7 @@ capacidad de transmisión en el canal, rate (1Mbit/s)
 tamaño de la SDU del nivel de enlace, pktSize (121 octetos)
 tiempo de espera para la retransmisión, wait (6 ms)*/
 
+
   // Parámetros de la simulación
   Time     trtx             = Time("6ms");
   uint32_t tamPaquete       = 121;
@@ -33,6 +34,19 @@ tiempo de espera para la retransmisión, wait (6 ms)*/
   DataRate vtx              = DataRate("1Mbps");
   uint8_t  tamVentana       = 6;
   double probabilidad_error = 0.00002;
+
+  
+  /*Preparamos los parámetros solicitados para poder ser introducidos
+    opcionalmente por línea de comandos*/
+  CommandLine cmd;
+
+  cmd.AddValue("window","Tamaño de la ventana de transmisión",tamVentana);
+  cmd.AddValue("delay","Retardo de propagación del enlace",rprop);
+  cmd.AddValue("rate","Capacidad de transmisión del canal",vtx);
+  cmd.AddValue("pktSize","Tamaño de la SDU de nivel de enlace",tamPaquete);
+  cmd.AddValue("wait","Tiempo de espera para la retransmisión",trtx);
+
+  cmd.Parse(argc,argv);
 
   //Ventana ventana (tamVentana,256);
 
@@ -85,7 +99,7 @@ tiempo de espera para la retransmisión, wait (6 ms)*/
   Simulator::Run ();
   Simulator::Destroy ();
 
-  NS_LOG_DEBUG ("TamPaquete: " << tamPaquete + 6);
+  NS_LOG_DEBUG ("TamPaquete: " << tamPaquete + 8); //Revisar esta parte
   NS_LOG_DEBUG ("Vtx: " << vtx);
   NS_LOG_DEBUG ("Rprop: " << rprop);
   NS_LOG_DEBUG ("RTT: " << vtx.CalculateTxTime (tamPaquete + 6) + 2 * rprop);
