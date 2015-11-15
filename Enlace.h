@@ -25,8 +25,8 @@ public:
   // Función para el procesamiento de asentimientos recibidos.
   // Comprueba si el ACK es el adecuado. Si lo es, desactiva el temporizador de
   // retransmisiones, actualiza el valor de la ventana y envía un nuevo paquete.
-  void ACKRecibido(uint8_t numSecuencia);
-  void DatoRecibido(uint8_t numSecuencia);
+  void ACKRecibido(uint32_t numSecuencia);
+  void DatoRecibido(uint32_t numSecuencia);
 
   // Función para el procesamiento de paquetes recibidos
   // Comprueba si el ACK es el adecuado. Si lo es, desactiva el temporizador de
@@ -62,23 +62,10 @@ private:
   // Método que se llama en el instante de comienzo de la aplicación.
   void StartApplication()
   {
-        //NS_LOG_COMPONENT_DEFINE ("Enlaceh");
-       //Ventana ventana (m_tamTx,rango);
-        //Ventana m_ventana (m_tamTx, rango); Ventana m_ventana (m_tamTx, rango);
 
-    // Formamos el primer paquete
-    //m_paquete = Create<Packet> (&m_tx, m_tamPqt + 1);
-    // Y lo enviamos
-   // NS_LOG_INFO("Valor de vent ini " << (unsigned int) m_vent_ini);
-      //  NS_LOG_INFO ("Resultado de ventana pendiente: " << (unsigned int) m_tx);
-    //for (m_tx = 0, m_vent_ini=0; ventana.EnVentana(m_tx)==true && ventana.Credito(); m_tx=ventana.Pendiente())
+    m_ventana.Vacia();
+    EnviaPaquete();
 
-    //Mientras queden huecos libres en la ventana, seguimos transmitiendo
-    //    while(m_ventana.Credito()>0)
-      //  {
-          EnviaPaquete();
-        //  m_tx=m_ventana.Pendiente();
-       // }
   }
 
   // Método que se llama en el instante de final de la aplicación.
@@ -94,7 +81,7 @@ private:
   // Tamaño del paquete
   uint32_t       m_tamPqt;
   // Número de secuencia de los paquetes a transmitir 
-  uint8_t        m_tx;
+  uint32_t        m_tx;
 
   //num secuencia inicial de la ventana V(A)
  // uint8_t        m_vent_ini;
@@ -113,7 +100,7 @@ private:
   // Número de secuencia de los paquetes a recibir
 
   //V(R) en el estándar (número secuencial de la siguiente trama que debe recibirse)
-  uint8_t        m_rx;
+  uint32_t        m_rx;
 
   uint32_t       rango;
 
