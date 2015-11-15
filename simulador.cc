@@ -21,7 +21,12 @@ NS_LOG_COMPONENT_DEFINE ("Practica04");
 
 
 double
-simulacion (Time espera, uint32_t pktSize, Time retardo, DataRate tasa, uint32_t ventana, double prob_error)
+simulacion (Time espera, 
+            uint32_t pktSize, 
+            Time retardo, 
+            DataRate tasa, 
+            uint32_t ventana, 
+            double prob_error)
 {
 
   // Parámetros de la simulación
