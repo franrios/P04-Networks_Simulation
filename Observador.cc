@@ -45,3 +45,17 @@ Observador::TotalPaquetesRechazados ()
 
 	return m_paquete_rechazado;
 }
+
+double
+Observador::GETCef (double probabilidad_error, uint32_t tamPkt, double rprop, double vtx)
+{
+	double cadenciaEficaz=(1-probabilidad_error)*((tamPkt*8)/((tamPkt+8)*8+probabilidad_error*2*rprop*vtx))*vtx;
+	return cadenciaEficaz;
+}
+
+double
+Observador::GETRend (double cadenciaEficaz, double vtx)
+{
+	double rendimiento = (cadenciaEficaz/vtx)*100;
+	return rendimiento;
+}

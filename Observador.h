@@ -13,6 +13,8 @@ public:
   void	   PaqueteRechazado (Ptr<const Packet> paquete_rechazado);
   uint32_t TotalPaquetes   ();
   uint32_t TotalPaquetesRechazados ();
+  double   GETCef (double probabilidad_error, uint32_t tamPkt, double rprop, double vtx);
+  double   GETRend (double cadenciaEficaz, double vtx);
 
 private:
   uint64_t m_paquetes;

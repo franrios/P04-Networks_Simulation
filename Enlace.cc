@@ -33,7 +33,7 @@ Enlace::Enlace(Ptr<NetDevice> disp,
   m_totalPqtACK=0;
   rango=256;
 
-
+  NS_LOG_INFO ("Parámetros de la ventana: tamTx " << (unsigned int) tamTx << ", rango "<< (unsigned int)rango );
   //NS_LOG_INFO("Parámetros del inicio: ventana " << (unsigned int) m_tamTx << "evaluado " << m_vent_ini + m_tamTx - 1);
 }
 
@@ -54,16 +54,8 @@ Enlace::ACKRecibido(uint8_t numSecuencia)
       Simulator::Cancel(m_temporizador);
       // aumentamos el número de secuencia
       m_ventana.Asentida(numSecuencia);
-      // Incrementamos el total de paquetes
-      m_totalPqt++;
 
       EnviaPaquete();
-    }
-    else
-    {
- //     NS_LOG_INFO("El ACK que se esperaba corresponde con: " << (unsigned int) m_vent_ini+1 << " y se ha recibido " << (unsigned int) numSecuencia);
-      Simulator::Cancel(m_temporizador);
-      VenceTemporizador();
     }
 }
 
@@ -86,7 +78,8 @@ void
 Enlace::EnviaPaquete()
 {
   NS_LOG_INFO("Tamaño del paquete " << m_tamPqt);
-  NS_LOG_INFO ("Valor de m_tx: " << (unsigned int) m_tx);
+  //NS_LOG_INFO ("Valor de m_tx: " << (unsigned int) m_tx);
+  //NS_LOG_INFO ("Valor al llamar a pendiente: " << m_ventana.Pendiente());
  // NS_LOG_INFO ("Valor de ventana pendiente: " << (unsigned int) m_ventana.Pendiente());
   while(m_ventana.Credito()>0){
   Ptr<Packet> paquete = Create<Packet> (m_tamPqt);
